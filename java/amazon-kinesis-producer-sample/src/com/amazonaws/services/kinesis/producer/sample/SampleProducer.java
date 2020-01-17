@@ -127,10 +127,10 @@ public class SampleProducer {
         final Runnable putOneRecord = new Runnable() {
             @Override
             public void run() {
-                ByteBuffer data = Utils.generateData(sequenceNumber.get(), config.getDataSize());
+                ByteBuffer data = Utils.generateData(sequenceNumber.get(), TIMESTAMP);
                 // TIMESTAMP is our partition key
                 ListenableFuture<UserRecordResult> f =
-                        producer.addUserRecord(config.getStreamName(), TIMESTAMP, Utils.randomExplicitHashKey(), data);
+                        producer.addUserRecord(config.getStreamName(), String.format("case-file-id-%s", Utils.randomIntGenerator(10)), data);
                 Futures.addCallback(f, callback, callbackThreadPool);
             }
         };

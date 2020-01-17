@@ -15,6 +15,8 @@
 
 package com.amazonaws.services.kinesis.producer.sample;
 
+import com.google.gson.JsonObject;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -28,6 +30,11 @@ public class Utils {
      */
     public static String randomExplicitHashKey() {
         return new BigInteger(128, RANDOM).toString(10);
+    }
+
+    public static int randomIntGenerator(int bound) {
+        Random random = new Random();
+        return (random.nextInt(bound));
     }
     
     /**
@@ -43,15 +50,23 @@ public class Utils {
      *            is added until this length is reached.
      * @return ByteBuffer containing the blob
      */
-    public static ByteBuffer generateData(long sequenceNumber, int totalLen) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Long.toString(sequenceNumber));
-        sb.append(" ");
-        while (sb.length() < totalLen) {
-            sb.append("a");
-        }
+    public static ByteBuffer generateData(long sequenceNumber, String timestamp) {
+        JsonObject data = new JsonObject();
+        data.addProperty("sequenceNumber", Long.toString(sequenceNumber));
+        data.addProperty("timestamp", timestamp);
+        data.addProperty("firstName", "John");
+        data.addProperty("lastName", "Doe");
+        data.addProperty("age", randomIntGenerator(76));
+
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(Long.toString(sequenceNumber));
+//        sb.append(" ");
+//        while (sb.length() < totalLen) {
+//            sb.append("a");
+//        }
+
         try {
-            return ByteBuffer.wrap(sb.toString().getBytes("UTF-8"));
+            return ByteBuffer.wrap(data.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

@@ -15,6 +15,7 @@
 
 package com.amazonaws.services.kinesis.producer.sample;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,8 +109,12 @@ public class SampleConsumer implements IRecordProcessorFactory {
             List<Long> seqNos = new ArrayList<>();
             
             for (Record r : records) {
+
+                JsonObject rAsJsonObject = new JsonParser().parse(String.valueOf(StandardCharsets.UTF_8.decode(r.getData()))).getAsJsonObject();
+
                 // Get the timestamp of this run from the partition key.
-                timestamp = Math.max(timestamp, Long.parseLong(r.getPartitionKey()));
+                timestamp = Math.max(timestamp, Long.parseLong(rAsJsonObject.get("timestamp").getAsString()));
+                long sequenceNumber = Long.parseLong(rAsJsonObject.get("sequenceNumber").getAsString());
                 
                 // Extract the sequence number. It's encoded as a decimal
                 // string and placed at the beginning of the record data,
@@ -116,7 +123,7 @@ public class SampleConsumer implements IRecordProcessorFactory {
                 try {
                     byte[] b = new byte[r.getData().remaining()];
                     r.getData().get(b);
-                    seqNos.add(Long.parseLong(new String(b, "UTF-8").split(" ")[0]));
+                    seqNos.add(sequenceNumber);
                 } catch (Exception e) {
                     log.error("Error parsing record", e);
                     System.exit(1);
