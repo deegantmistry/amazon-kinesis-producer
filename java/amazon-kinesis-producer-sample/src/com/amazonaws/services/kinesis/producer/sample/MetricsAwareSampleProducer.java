@@ -158,7 +158,7 @@ public class MetricsAwareSampleProducer {
             // number of records outstanding.
             if (sequenceNumber.get() < totalRecordsToPut) {
                 if (kinesisProducer.getOutstandingRecordsCount() < outstandingLimit) {
-                    ByteBuffer data = Utils.generateData(sequenceNumber.incrementAndGet(), dataSize);
+                    ByteBuffer data = Utils.generateData(sequenceNumber.incrementAndGet(), String.valueOf(dataSize));
                     ListenableFuture<UserRecordResult> f = kinesisProducer.addUserRecord(SampleProducerConfig.STREAM_NAME_DEFAULT,
                             timetstamp, data);
                     Futures.addCallback(f, callback, Executors.newSingleThreadExecutor());
