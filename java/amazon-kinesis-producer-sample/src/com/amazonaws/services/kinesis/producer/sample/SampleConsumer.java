@@ -114,8 +114,9 @@ public class SampleConsumer implements IRecordProcessorFactory {
                 log.info(rAsJsonObject.getAsString());
 
                 // Get the timestamp of this run from the partition key.
-                timestamp = Math.max(timestamp, Long.parseLong(rAsJsonObject.get("timestamp").getAsString()));
-                long sequenceNumber = Long.parseLong(rAsJsonObject.get("sequenceNumber").getAsString());
+                timestamp = Math.max(timestamp,
+                        Long.parseLong(rAsJsonObject.getAsJsonObject().get("producerTimestamp").getAsString()));
+                long producerSequenceNumber = Long.parseLong(rAsJsonObject.getAsJsonObject().get("producerSequenceNumber").getAsString());
                 
                 // Extract the sequence number. It's encoded as a decimal
                 // string and placed at the beginning of the record data,
@@ -124,7 +125,7 @@ public class SampleConsumer implements IRecordProcessorFactory {
                 try {
                     byte[] b = new byte[r.getData().remaining()];
                     r.getData().get(b);
-                    seqNos.add(sequenceNumber);
+                    seqNos.add(producerSequenceNumber);
                 } catch (Exception e) {
                     log.error("Error parsing record", e);
                     System.exit(1);

@@ -17,6 +17,7 @@ package com.amazonaws.services.kinesis.producer.sample;
 
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -53,19 +54,11 @@ public class Utils {
      */
     public static ByteBuffer generateData(long sequenceNumber, String timestamp) {
         JsonObject data = new JsonObject();
-        data.addProperty("sequenceNumber", Long.toString(sequenceNumber));
-        data.addProperty("timestamp", timestamp);
+        data.addProperty("producerSequenceNumber", Long.toString(sequenceNumber));
+        data.addProperty("producerTimestamp", timestamp);
         data.addProperty("firstName", "John");
         data.addProperty("lastName", "Doe");
-        data.addProperty("age", randomIntGenerator(76));
-
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(Long.toString(sequenceNumber));
-//        sb.append(" ");
-//        while (sb.length() < totalLen) {
-//            sb.append("a");
-//        }
-
+        data.addProperty("age", randomIntGenerator(76).toString());
         try {
             return ByteBuffer.wrap(data.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
