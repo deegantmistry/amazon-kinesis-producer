@@ -215,7 +215,7 @@ public class SampleConsumer implements IRecordProcessorFactory {
                         "mwapps-kinesis-json-sample-consumer",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
                         new DefaultAWSCredentialsProviderChain(),
-                        "mwapps-kinesis-json-sample-consumer-1")
+                        "mwapps-kinesis-json-sample-consumer-c1")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
                                 .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
         
