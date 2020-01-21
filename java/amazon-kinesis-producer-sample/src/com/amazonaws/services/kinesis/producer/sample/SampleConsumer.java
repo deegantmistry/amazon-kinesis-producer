@@ -111,6 +111,7 @@ public class SampleConsumer implements IRecordProcessorFactory {
             for (Record r : records) {
 
                 JsonObject rAsJsonObject = new JsonParser().parse(String.valueOf(StandardCharsets.UTF_8.decode(r.getData()))).getAsJsonObject();
+                log.info(rAsJsonObject.getAsString());
 
                 // Get the timestamp of this run from the partition key.
                 timestamp = Math.max(timestamp, Long.parseLong(rAsJsonObject.get("timestamp").getAsString()));
@@ -211,10 +212,10 @@ public class SampleConsumer implements IRecordProcessorFactory {
         int argIndex=0;
         KinesisClientLibConfiguration config =
                 new KinesisClientLibConfiguration(
-                        "KinesisProducerLibSampleConsumer",
+                        "mwapps-kinesis-json-sample-consumer",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
                         new DefaultAWSCredentialsProviderChain(),
-                        "KinesisProducerLibSampleConsumer")
+                        "mwapps-kinesis-json-sample-consumer-1")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
                                 .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
         
