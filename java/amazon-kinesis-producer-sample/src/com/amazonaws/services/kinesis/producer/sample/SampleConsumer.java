@@ -214,10 +214,10 @@ public class SampleConsumer implements IRecordProcessorFactory {
         int argIndex=0;
         KinesisClientLibConfiguration config =
                 new KinesisClientLibConfiguration(
-                        "mwapps-kinesis-json-sample-consumer",
+                        "mwapps-kinesis-json-sample-consumer-new",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
                         new DefaultAWSCredentialsProviderChain(),
-                        "mwapps-kinesis-json-sample-consumer-c1")
+                        "mwapps-kinesis-json-sample-consumer-new-c1")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
                                 .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
         
