@@ -130,7 +130,7 @@ public class SampleProducer {
                 ByteBuffer data = Utils.generateData(sequenceNumber.get(), TIMESTAMP);
                 // TIMESTAMP is our partition key
                 ListenableFuture<UserRecordResult> f =
-                        producer.addUserRecord(config.getStreamName(), String.format("case-file-id-%s", Utils.randomIntGenerator(10)), data);
+                        producer.addUserRecord(config.getStreamName(), String.format("case-file-id-%s", Utils.randomIntGenerator(10).toString()), data);
                 Futures.addCallback(f, callback, callbackThreadPool);
             }
         };

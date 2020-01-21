@@ -32,9 +32,10 @@ public class Utils {
         return new BigInteger(128, RANDOM).toString(10);
     }
 
-    public static int randomIntGenerator(int bound) {
+    public static Integer randomIntGenerator(int boundInt) {
         Random random = new Random();
-        return (random.nextInt(bound));
+        int randInt = random.nextInt(boundInt);
+        return randInt + 1;
     }
     
     /**
