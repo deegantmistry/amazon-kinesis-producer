@@ -219,6 +219,8 @@ public class SampleConsumer implements IRecordProcessorFactory {
                 System.getenv("CROSS_ACCOUNT_KINESIS_ROLE_ARN_TO_ASSUME") != null ?
                         System.getenv("CROSS_ACCOUNT_KINESIS_ROLE_ARN_TO_ASSUME") : "";
 
+        AWSCredentialsProviderChain awsCredentialsProviderChain = new AWSCredentialsProviderChain(new DefaultAWSCredentialsProviderChain());
+
         STSAssumeRoleSessionCredentialsProvider stsAssumeRoleSessionCredentialsProvider =
                 new STSAssumeRoleSessionCredentialsProvider
                         .Builder(crossAccountKinesisRoleArnToAssume, UUID.randomUUID().toString()).build();
@@ -236,6 +238,8 @@ public class SampleConsumer implements IRecordProcessorFactory {
                         "mwapps-kinesis-json-sample-consumer-new",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
                         chain,
+                        awsCredentialsProviderChain,
+                        awsCredentialsProviderChain,
                         "mwapps-kinesis-json-sample-consumer-new-c1")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
                                 .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
