@@ -9,6 +9,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-sts:1.11.603" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:jmespath-java:1.11.603" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:amazon-kinesis-client:1.11.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:26.0-jre" level="project" />
@@ -38,7 +40,6 @@
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-dynamodb:1.11.603" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.603" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.603" level="project" />
-    <orderEntry type="library" name="Maven: com.amazonaws:jmespath-java:1.11.603" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kinesis:1.11.603" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-cloudwatch:1.11.603" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.0.Final" level="project" />

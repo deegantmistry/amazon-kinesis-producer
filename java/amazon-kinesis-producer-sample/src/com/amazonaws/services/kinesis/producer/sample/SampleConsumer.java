@@ -19,16 +19,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.amazonaws.auth.*;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessor;
 import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessorCheckpointer;
 import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessorFactory;
@@ -79,7 +81,7 @@ import com.amazonaws.services.kinesis.model.Record;
  */
 public class SampleConsumer implements IRecordProcessorFactory {
     private static final Logger log = LoggerFactory.getLogger(SampleConsumer.class);
-    
+
     // All records from a run of the producer have the same timestamp in their
     // partition keys. Since this value increases for each run, we can use it
     // determine which run is the latest and disregard data from earlier runs.
@@ -212,11 +214,28 @@ public class SampleConsumer implements IRecordProcessorFactory {
      */
     public static void main(String[] args) {
         int argIndex=0;
+
+        String crossAccountKinesisRoleArnToAssume =
+                System.getenv("CROSS_ACCOUNT_KINESIS_ROLE_ARN_TO_ASSUME") != null ?
+                        System.getenv("CROSS_ACCOUNT_KINESIS_ROLE_ARN_TO_ASSUME") : "";
+
+        STSAssumeRoleSessionCredentialsProvider stsAssumeRoleSessionCredentialsProvider =
+                new STSAssumeRoleSessionCredentialsProvider
+                        .Builder(crossAccountKinesisRoleArnToAssume, UUID.randomUUID().toString()).build();
+
+        AWSCredentialsProviderChain chain = new AWSCredentialsProviderChain(
+                new EnvironmentVariableCredentialsProvider(),
+                new SystemPropertiesCredentialsProvider(),
+                new ProfileCredentialsProvider(),
+                stsAssumeRoleSessionCredentialsProvider,
+                new EC2ContainerCredentialsProviderWrapper()
+        );
+
         KinesisClientLibConfiguration config =
                 new KinesisClientLibConfiguration(
                         "mwapps-kinesis-json-sample-consumer-new",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
-                        new DefaultAWSCredentialsProviderChain(),
+                        chain,
                         "mwapps-kinesis-json-sample-consumer-new-c1")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
                                 .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
