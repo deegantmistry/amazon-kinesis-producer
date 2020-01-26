@@ -225,7 +225,7 @@ public class SampleConsumer implements IRecordProcessorFactory {
                 new STSAssumeRoleSessionCredentialsProvider
                         .Builder(crossAccountKinesisRoleArnToAssume, UUID.randomUUID().toString()).build();
 
-        AWSCredentialsProviderChain chain = new AWSCredentialsProviderChain(
+        AWSCredentialsProviderChain kinesisProviderChain = new AWSCredentialsProviderChain(
                 new EnvironmentVariableCredentialsProvider(),
                 new SystemPropertiesCredentialsProvider(),
                 new ProfileCredentialsProvider(),
@@ -237,7 +237,7 @@ public class SampleConsumer implements IRecordProcessorFactory {
                 new KinesisClientLibConfiguration(
                         "mwapps-kinesis-json-sample-consumer-new",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
-                        chain,
+                        kinesisProviderChain,
                         awsCredentialsProviderChain,
                         awsCredentialsProviderChain,
                         "mwapps-kinesis-json-sample-consumer-new-c1")
