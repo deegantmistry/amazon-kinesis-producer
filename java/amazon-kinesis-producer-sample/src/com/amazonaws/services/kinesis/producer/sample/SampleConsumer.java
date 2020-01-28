@@ -235,12 +235,12 @@ public class SampleConsumer implements IRecordProcessorFactory {
 
         KinesisClientLibConfiguration config =
                 new KinesisClientLibConfiguration(
-                        "mwapps-kinesis-json-sample-consumer-new",
+                        "mwapps-kinesis-json-cross-account-consumer",
                         SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.STREAM_NAME_DEFAULT),
                         kinesisProviderChain,
                         awsCredentialsProviderChain,
                         awsCredentialsProviderChain,
-                        "mwapps-kinesis-json-sample-consumer-new-c1")
+                        "mwapps-kinesis-json-cross-accout-consumer-worker-one")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
                                 .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
         
