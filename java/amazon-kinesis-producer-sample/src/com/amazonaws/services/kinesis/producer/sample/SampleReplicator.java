@@ -288,7 +288,7 @@ public class SampleReplicator implements IRecordProcessorFactory {
                         awsCredentialsProviderChain,
                         "mwapps-kinesis-json-cross-accout-replicator")
                                 .withRegionName(SampleProducerConfig.getArgIfPresent(args, argIndex++, SampleProducerConfig.REGION_DEFAULT))
-                                .withInitialPositionInStream(InitialPositionInStream.TRIM_HORIZON);
+                                .withInitialPositionInStream(InitialPositionInStream.LATEST);
         
         final SampleReplicator replicator = new SampleReplicator();
 
